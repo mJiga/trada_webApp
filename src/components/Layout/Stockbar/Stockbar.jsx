@@ -5,69 +5,35 @@ import { StockbarItem } from "./StockbarItem";
 function Stockbar() {
 
   return (
-    <div className="font-Poppins">
+    <div className="flex flex-wrap justify-center content-between font-Poppins w-80 h-full border border-zinc-800 pb-8">
+      <h2 className="text-3xl text-center w-full py-3 border-b border-zinc-800">Trending <br></br>Stocks</h2>
       <StockbarItem
-        to='/'
-        Icon={'GoogleLogo'}
-        label={<span> Trending <br/> Stocks</span>}
-        isTrendingStock={true}
-        padding="p-6"
-      />
-      <StockbarItem
-        to='/home'
-        Icon={GoogleLogo}
-        label='Google'        
-        iconSize="w-8 h-8"
-        padding="p-6"
+        to='/simulator'
+        acro='Google'
+        company='Alphabet Inc.'
+        date='7/7/2024'
+        percentage='+20.00%'
       />
       <StockbarItem
         to='/simulator'
-        Icon={GoogleLogo}
-        label='Google'
-        iconSize="w-8 h-8"
-        padding="p-6"
+        acro='Google'
+        company='Alphabet Inc.'
+        date='7/7/2024'
+        percentage='+20.00%'
       />
       <StockbarItem
-        to='/trade'
-        Icon={GoogleLogo}
-        label='Google'
-        iconSize="w-8 h-8"
-        padding="p-6"
+        to='/simulator'
+        acro='Google'
+        company='Alphabet Inc.'
+        date='7/7/2024'
+        percentage='+20.00%'
       />
       <StockbarItem
-        to='/trade'
-        Icon={GoogleLogo}
-        label='Google'
-        iconSize="w-8 h-8"
-        padding="p-6"
-      />
-      <StockbarItem
-        to='/trade'
-        Icon={GoogleLogo}
-        label='Google'
-        iconSize="w-8 h-8"
-        padding="p-6"
-      />
-      <StockbarItem
-        to='/trade'
-        Icon={GoogleLogo}
-        label='Google'
-        iconSize="w-8 h-8"
-        padding="p-6"
-      />
-      <StockbarItem
-        to='/trade'
-        Icon={GoogleLogo}
-        label='Google'
-        iconSize="w-8 h-8"
-        padding="p-6"
-      />
-      <StockbarItem
-        to='/trade'
-        Icon={GoogleLogo}
-        label='Google'
-        iconSize="w-8 h-8"
-        padding="p-6"
+        to='/simulator'
+        acro='Google'
+        company='Alphabet Inc.'
+        date='7/7/2024'
+        percentage='+20.00%'
       />
     </div>
   );
