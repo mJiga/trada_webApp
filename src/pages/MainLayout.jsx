@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="main-layout bg-zinc-950 min-h-screen font-Poppins text-white flex">
+    <div className="bg-black min-h-screen font-Poppins text-white flex">
 
       <div className="fixed top-0 left-0 h-full flex flex-col z-30">
         <header className="hover:text-zinc-400 transition duration-300 ease-in-out p-8 ml-20">
@@ -14,10 +14,10 @@ const MainLayout = ({ children }) => {
         <Navbar className="z-40" />
       </div>
 
-      <div className="mt-4 flex flex-grow flex-col items-center justify-center">
-        <SearchBar className="z-40"/>
+      <div className="flex flex-grow flex-col items-center justify-center">
+        <SearchBar className="z-40 mt-4"/>
 
-        <div className="flex-grow flex items-center justify-center">
+        <div className="flex-grow w-full max-w-4xl px-4 overflow-y-auto">
           {children}
         </div>
       </div>

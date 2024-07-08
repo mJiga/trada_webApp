@@ -7,7 +7,7 @@ const AuthContext = createContext(undefined);
 export const useAuthContext = () => {
     const context = useContext(AuthContext);
     if (context === undefined) {
-        throw new Error("useAuthContext must be used with a useAuthContext");
+        throw new Error("AuthContext must be used with a useAuthContext");
     }
     return context;     
 }

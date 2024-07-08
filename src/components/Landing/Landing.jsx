@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { TypewriterEffectSmooth } from './ui/type-writer-effect';
-import { HoverBorderGradient } from './ui/hover-border-gradient';
+import { TypewriterEffectSmooth } from '../ui/type-writer-effect';
+import { HoverBorderGradient } from '../ui/hover-border-gradient';
 
 function Landing() {
     useEffect(() => {

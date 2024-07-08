@@ -10,6 +10,7 @@ import MainLayout from './pages/MainLayout';
 import TradePage from './pages/TradePage';
 import SimulatorPage from './pages/SimulatorPage';
 import ProfilePage from './pages/ProfilePage';
+import { FirestoreProvider } from './contexts/FirestoreContext';
 
 function App() {
 
@@ -79,7 +80,9 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <RouterProvider router={ router }/>
+        <FirestoreProvider>
+          <RouterProvider router={ router }/>
+        </FirestoreProvider>
       </AuthProvider>
     </>
   )

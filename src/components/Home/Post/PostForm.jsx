@@ -8,6 +8,12 @@ const PostForm = () => {
   
   const [body, setBody] = useState('');
   const [file, setFile] = useState(null);
+  const [createdAt, setCreatedAt] = useState('');
+  // const [likeCount, setLikeCount] = useState(0);
+  // const [isUpdated, setIsUpdated] = useState(false);
+  // const [updatedAt, setUpdatedAt] = useState('');
+  // const [comments, setComments] = useState([...comments]);
+  // make sure user id gets passed as well
 
   const handleFileSelection = () => {
     document.getElementById('fileInput').click();
