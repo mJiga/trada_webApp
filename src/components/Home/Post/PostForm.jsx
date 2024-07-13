@@ -1,67 +1,160 @@
 import { CircleAccount } from "@/assets/icons/CircleAccount";
-import { ExpandIcon } from "@/assets/icons/ExpandIcon copy";
+import { AiOutlineExpandAlt } from "react-icons/ai";
 import { ImageIcon } from "@/assets/icons/ImageIcon";
-import { SimulatorIcon } from "@/assets/icons/SimulatorIcon";
-import { useState } from "react";
+import { GiArtificialHive } from "react-icons/gi";
+import { useState, useEffect, useRef } from "react";
+import Modal from "@/components/Modal";
+import { useFirestoreContext } from "@/contexts/FirestoreContext";
+import { auth, serverTimestamp } from "@/config/firebase";
+import { IoIosSend } from "react-icons/io";
+import Expand from "./Expand/Expand";
 
 const PostForm = () => {
-  
-  const [body, setBody] = useState('');
-  const [file, setFile] = useState(null);
-  const [createdAt, setCreatedAt] = useState('');
-  // const [likeCount, setLikeCount] = useState(0);
-  // const [isUpdated, setIsUpdated] = useState(false);
-  // const [updatedAt, setUpdatedAt] = useState('');
-  // const [comments, setComments] = useState([...comments]);
-  // make sure user id gets passed as well
 
-  const handleFileSelection = () => {
-    document.getElementById('fileInput').click();
-  }
+  const { addPost, uploadFile, addImageUrlToPost, updateLocalPost } = useFirestoreContext();
+
+  const [body, setBody] = useState('');
+  const [files, setFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
+  const [likeCount, setLikeCount] = useState(0);
+
+  const [openExpand, setOpenExpand] = useState(false);
+
+  const textareaRef = useRef(null);
+
+
+  // thanks chat
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [body]);
+  //
+
+  const handleFileSelection = (e) => {
+    const selectedFiles = Array.from(e.target.files); 
+    setFiles((files) => [...files, ...selectedFiles]);
+
+    selectedFiles.forEach(makePreview);
+
+    if (files){
+      setOpenExpand(true);
+    }
+  };
+
+  const makePreview = (file) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+    setPreviews((previews) => [...previews, reader.result]);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (!body) {
+        console.log('Empty body: Unable to create post')  
+        return;
+      }
+
+      const timestamp = serverTimestamp();
   
+      const post = {
+        body: body,
+        comments: [],
+        createdAt: timestamp,
+        imageURL: [],
+        isEdited: false,
+        likeCount: 0,
+        userId: auth?.currentUser?.uid
+      };
+  
+      const postId = await addPost(post);
+  
+      if (files.length > 0) {
+        const uploadPromises = files.map(async (file) => {
+          const currImageUrl = await uploadFile(file, postId);
+          await addImageUrlToPost(postId, currImageUrl);
+          return currImageUrl;
+        });
+
+        await Promise.all(uploadPromises);
+
+      }
+  
+      setBody('');
+      setFiles([]);
+      setPreviews([]);
+      setOpenExpand(false);
+    } catch (err) {
+      console.error('Error during uploading post', err.message);
+      throw err;
+    }
+  };
+
   return (
-    <div>
-      <form className="flex flex-col space-y-2">
-        <div className="flex flex-row items-center">
-          <CircleAccount className='h-20 w-20 mr-4'/>
-          <input
+    <div className="mb-4">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-2 bg-zinc-950 rounded-xl w-auto py-2">
+        <div className="flex flex-row items-center ml-6 mt-2">
+          <CircleAccount className="h-10 w-10 mr-2 fill-gray-400 hover:fill-gray-500 transition-colors ease-in-out duration-300"/>
+          <textarea
             placeholder="Create post..."
-            type="text"
             onChange={(e) => setBody(e.target.value)}
             value={body}
-            className='font-Poppins font-light text-lg p-4 w-96 rounded-xl shadow-xl border-2 border-zinc-950 bg-zinc-800 hover:border-zinc-800 focus:outline-none focus:border-fuchsia-800 focus:bg-zinc-900 transition duration-300 ease-in-out'
+            className="font-Poppins font-light text-sm p-2 w-full max-w-lg rounded-2xl shadow-md border border-zinc-900 bg-zinc-900 hover:border-zinc-800 focus:outline-none placeholder:text-gray-500 focus:border-zinc-800 transition duration-300 ease-in-out resize-none overflow-hidden"
+            style={{minHeight: '40px'}}
             autoFocus
           />
         </div>
         
-        <div className="flex flex-row" onClick={handleFileSelection}>
-          <span className="cursor-pointer">
-            <ExpandIcon className='h-8 w-8 ml-28'/>
-          </span>
+        <div className="flex flex-row ml-20 space-x-2 items-center">
+          <button type='button' className="cursor-pointer" onClick={() => setOpenExpand(!openExpand)}>
+            <AiOutlineExpandAlt className="h-6 w-4 fill-gray-400 hover:fill-gray-500 transition-colors ease-in-out duration-300" />
+          </button>
+
+          <Modal open={openExpand} setOpen={setOpenExpand}>
+            <Expand
+              setOpenExpand={setOpenExpand}
+              body={body}
+              setBody={setBody}
+              files={files}
+              setFiles={setFiles}
+              previews={previews}
+              setPreviews={setPreviews}
+              handleSubmit={handleSubmit}
+              makePreview={makePreview}
+              handleFileSelection={handleFileSelection}
+            />
+          </Modal>
+
+          <label htmlFor="fileInput" className="cursor-pointer">
+            <ImageIcon className="h-6 w-4 fill-gray-400 hover:fill-gray-500 transition-colors ease-in-out duration-300" />
+          </label>
           <input
-            type="file"
-            id="fileInput"
-            value = {file}
-            onChange={(e) => setFile(e.target.files[0])}
-            style={{ display: 'none' }}
-          />
-          <span className="cursor-pointer">
-            <ImageIcon className='h-8 w-8 ml-4'/>
-          </span>
-          <input
-            // type="file"
-            // value = {file}
-            // ADD AI IMPLEMENTATION
-            // onChange={(e) => setFile(e.target.files[0])}
-            style={{ display: 'none' }}
-          />
-          <span>
-            <SimulatorIcon className='h-8 w-8 ml-4'/>
-          </span>
+              type="file"
+              id="fileInput"
+              onChange={handleFileSelection}
+              className="hidden"
+              accept="image/*"
+              multiple
+            />
+          
+          <button type='button'>
+            <GiArtificialHive className="h-6 w-4 fill-gray-400 hover:fill-gray-500 transition-colors ease-in-out duration-300"/>
+          </button>
+
+          <button type="submit" className={`group flex items-center justify-center ml-96 rounded-full px-2 py-1 transition-all duration-300 ease-in-out ${body.trim() ? 'bg-fuchsia-600 group-hover:bg-fuchsia-700' : 'bg-zinc-900 group-hover:text-fuchsia-600 cursor-not-allowed'}`}>
+            <IoIosSend className={`mr-1 transition-all duration-300 ease-in-out ${body.trim() ? 'group-hover:text-gray-200' : 'text-white'}`}/>
+            <span className={`text-xs ransition-all duration-300 ease-in-out ${body.trim() ? 'hover:text-gray-200' : 'text-white'}`}>
+              Post
+            </span>
+          </button>
         </div>
       </form>
     </div>
-  )
+  );
 }
 
-export default PostForm
+export default PostForm;

@@ -1,9 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, serverTimestamp as firestoreServerTimestamp } from 'firebase/firestore';
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: REACT_APP_FIREBASE_KEY,
+  apiKey: "AIzaSyDocluE1WG_9kVxe5U0BXC8Jn3jXbFz5yY",
   authDomain: "trada-29ce0.firebaseapp.com",
   projectId: "trada-29ce0",
   storageBucket: "trada-29ce0.appspot.com",
@@ -17,3 +18,5 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app);
+export const storage = getStorage(app);
+export const serverTimestamp = firestoreServerTimestamp;

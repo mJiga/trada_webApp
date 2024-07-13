@@ -15,7 +15,7 @@ const MainLayout = ({ children }) => {
       </div>
 
       <div className="flex flex-grow flex-col items-center justify-center">
-        <SearchBar className="z-40 mt-4"/>
+        <SearchBar className="z-40"/>
 
         <div className="flex-grow w-full max-w-4xl px-4 overflow-y-auto">
           {children}

@@ -6,6 +6,7 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { NavbarItem } from './NavbarItem';
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { GiArtificialHive } from "react-icons/gi";
 
 function Navbar() {
   const { currentUser } = useAuthContext();
@@ -37,7 +38,7 @@ function Navbar() {
       />
       <NavbarItem
         to='/simulator'
-        Icon={SimulatorIcon}
+        Icon={GiArtificialHive}
         label='Simulator'
         currentPage = {currentPage}
         isSimulator={true}
