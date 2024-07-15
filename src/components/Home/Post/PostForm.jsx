@@ -7,11 +7,13 @@ import Modal from "@/components/Modal";
 import { useFirestoreContext } from "@/contexts/FirestoreContext";
 import { auth, serverTimestamp } from "@/config/firebase";
 import { IoIosSend } from "react-icons/io";
+import { useAuthContext } from "@/contexts/AuthContext"
 import Expand from "./Expand/Expand";
 
 const PostForm = () => {
 
   const { addPost, uploadFile, addImageUrlToPost, updateLocalPost } = useFirestoreContext();
+  const { userProfile } = useAuthContext();
 
   const [body, setBody] = useState('');
   const [files, setFiles] = useState([]);
@@ -97,8 +99,12 @@ const PostForm = () => {
   return (
     <div className="mb-4">
       <form onSubmit={handleSubmit} className="flex flex-col space-y-2 bg-zinc-950 rounded-xl w-auto py-2">
-        <div className="flex flex-row items-center ml-6 mt-2">
-          <CircleAccount className="h-10 w-10 mr-2 fill-gray-400 hover:fill-gray-500 transition-colors ease-in-out duration-300"/>
+        <div className="flex flex-row items-center ml-4 mt-2">
+            {userProfile?.pfp ? (
+              <img src={userProfile.pfp} alt="Profile" className="h-10 w-10 mr-4 rounded-full object-cover" />
+            ) : (
+              <CircleAccount className="h-10 w-10 mr-2 fill-gray-400 hover:fill-gray-500 transition-colors ease-in-out duration-300" />
+            )}
           <textarea
             placeholder="Create post..."
             onChange={(e) => setBody(e.target.value)}
@@ -126,6 +132,7 @@ const PostForm = () => {
               handleSubmit={handleSubmit}
               makePreview={makePreview}
               handleFileSelection={handleFileSelection}
+              userProfile={userProfile}
             />
           </Modal>
 

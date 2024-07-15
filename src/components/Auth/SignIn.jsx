@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { GoogleLogo } from '../../assets/icons/GoogleLogo.jsx';
-import { Close } from '../../assets/icons/Close.jsx';
+import { IoIosClose } from "react-icons/io";
 import { HoverBorderGradient } from '../ui/hover-border-gradient';
 
 function SignIn() {
@@ -51,9 +51,9 @@ function SignIn() {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black p-4 text-white">
+    <div className="flex items-center justify-center min-h-screen bg-black p-4 text-white h-[280px]">
       <div className="relative flex flex-col space-y-6 bg-zinc-950 shadow-2xl rounded-2xl p-6 w-full max-w-md">
-        <Link to='/auth'><Close color={hovered ? 'fuchsia' : '#e8eaed'} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}/></Link>
+        <Link to='/auth'><IoIosClose className="ml-auto w-7 h-7 text-gray-400 hover:text-gray-500 transition-all duration-300 ease-in-out" /></Link>
         <header className="text-center hover:text-zinc-400 transition duration-300 ease-in-out">
           <Link to="/" className="text-lg font-bold">TRADA</Link>
         </header>

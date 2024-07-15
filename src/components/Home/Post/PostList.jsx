@@ -1,10 +1,12 @@
 import { useFirestoreContext } from "@/contexts/FirestoreContext"
+import { useAuthContext } from "@/contexts/AuthContext";
 import PostLayout from "./PostLayout";
 import { ImSleepy } from "react-icons/im";
 
 export const PostList = () => {
   
   const { postList } = useFirestoreContext();
+  const { currentUser } = useAuthContext();
 
   if (postList.length === 0) {
     return (
@@ -19,7 +21,7 @@ export const PostList = () => {
   return (
     <div>
       {postList.map((post) => (
-        <PostLayout key={post.id} id={post.id} post={post}/>
+        <PostLayout key={`${post.id}-${currentUser.uid}`} post={post} />
       ))}
     </div>
   )

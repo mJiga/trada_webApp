@@ -8,7 +8,11 @@ import { PiTrashBold, PiTrashFill  } from "react-icons/pi";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoIosClose } from "react-icons/io";
 import { useFirestoreContext } from "@/contexts/FirestoreContext";
+import { useAuthContext } from "@/contexts/AuthContext"
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/config/firebase";
 import Edit from "./Expand/Edit";
+import { CircleAccount } from "@/assets/icons/CircleAccount";
 
 export const PostLayout = ({ post }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -22,6 +26,16 @@ export const PostLayout = ({ post }) => {
 
   const { deletePost } = useFirestoreContext();
 
+  const { userProfile } = useAuthContext();
+  const [postUser, setPostUser] = useState(null);
+  useEffect(() => {
+    const fetchPostUser = async () => {
+    const userData = await getPostUser(post.userId);
+    setPostUser(userData);
+    };
+    fetchPostUser();
+  }, [post.userId]); 
+
   // thanks chat
   const textareaRef = useRef(null);
   useEffect(() => {
@@ -32,6 +46,23 @@ export const PostLayout = ({ post }) => {
     }
   }, [post.body]);
   //
+
+  const getPostUser = async (userId) => {
+    try {
+      const profileRef = doc(db, 'profiles', userId);
+      const profileSnap = await getDoc(profileRef);
+      if (profileSnap.exists()) {
+        return profileSnap.data();
+      } else {
+        console.log("There is no profile that exists for the given doc");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      return null;
+    }
+  };
+  
 
   const handleLikeClick = () => setIsLiked(!isLiked);
 
@@ -71,10 +102,16 @@ export const PostLayout = ({ post }) => {
     <div className="w-full bg-black p-2">
       <div className="max-w-xl mx-auto bg-zinc-950 rounded-md shadow-md overflow-hidden">
         <div className="p-3 flex items-center">
-          <div className="bg-white rounded-full shadow-md w-8 h-8"></div>
+          <div>
+            {userProfile?.pfp ? (
+              <img src={userProfile?.pfp} alt="Profile" className="h-10 w-10 rounded-full object-cover" />
+            ) : (
+              <CircleAccount className="h-10 w-10 fill-gray-400 hover:fill-gray-500 transition-colors ease-in-out duration-300" />
+            )}
+          </div>
             <div className="flex flex-col ml-3 font-light text-xs text-gray-500">
-              <span className="font-medium text-white">{post.name || 'name'}</span>
-              <span>{post.username || 'username'}</span>
+              <span className="font-medium text-white">{postUser?.name || 'name'}</span>
+              <span>{postUser?.username || 'username'}</span>
               <div className="flex">
                 <span>{formatTimestamp(post.createdAt)}</span>
                 {post.isEdited && (

@@ -1,26 +1,29 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
-export const NavbarItem = ({ to, Icon, label, currentPage, isSimulator, isProfile, iconSize, padding }) => {
-
+export const NavbarItem = ({ to, Icon, image, label, currentPage, isSimulator, isProfile, iconSize, padding }) => {
   return (
-    <div>
-      <Link
-        to={to}
+    <Link
+      to={to}
+      className={`
+        flex items-center w-64
+        ${padding}
+        ${currentPage === to
+          ? 'font-bold bg-zinc-800'
+          : 'font-light bg-zinc-950 hover:bg-zinc-900 hover:font-medium'}
+        transition-all duration-300 ease-in-out
+      `}
+    >
+      {Icon && <Icon className={`${iconSize} ${isProfile ? '' : 'mr-2'}`}/>}
+      <span
         className={`
-          top-0 left-0 justify-center border border-neutral-900 shadow-md max-w-80 flex
-          ${isProfile ? 'flex-col' : 'flex-row'} items-center shadow-2xl 
-          ${padding} ${currentPage === to ? 'bg-fuchsia-600 hover:bg-fuchsia-700 transition duration-300 ease-in-out' : 'bg-zinc-950 hover:bg-zinc-900 transition duration-300 ease-in-out'}`}
+          text-sm truncate
+          ${isSimulator ? 'bg-clip-text text-transparent bg-gradient-to-l from-white to-fuchsia-600' : ''}
+          ${isProfile ? 'ml-2' : ''}
+        `}
       >
-        <Icon className={`
-          ${iconSize} 
-          ${isProfile ? 'mb-2' : 'mr-1'}`} />
-        <span className={`
-          text-s 
-          ${isProfile ? 'font-light' : 'font-normal'} 
-          ${isSimulator && 'bg-clip-text text-transparent bg-gradient-to-l from-white to-fuchsia-600'}`}>
-          {label}
-        </span>
-      </Link>
-    </div>
+        {label}
+      </span>
+    </Link>
   );
 };

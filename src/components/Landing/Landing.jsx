@@ -24,11 +24,11 @@ function Landing() {
 
     return (
       <div className="bg-black min-h-screen font-Poppins text-white flex grow flex-col justify-center shadow-lg text-center">
-        <header className='group flex justify-center items-center hiddenx font-bold text-2xl p-6 fixed top-0 w-full hover:text-zinc-400 transition duration-300 ease-in-out'>
+        <header className='group flex flex-row justify-center items-center hiddenx font-bold text-2xl p-6 fixed top-0 w-full hover:text-zinc-400 transition duration-300 ease-in-out'>
             <GiArtificialHive className="w-8 h-8 mr-2 text-fuchsia-500 group-hover:text-fuchsia-700 transition duration-300 ease-in-ou" />
             <Link to='/'>TRADA</Link>
         </header>
-        <div className='flex flex-col items-center justify-center flex-grow'>
+        <div className='inset-0 flex flex-col items-center justify-center flex-grow'>
             <h1 className='hiddenx font-bold text-8xl'>
                 TRADING: <span className="text-fuchsia-600">REINVENTED</span>
             </h1>

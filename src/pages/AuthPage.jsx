@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { GoogleLogo } from '../assets/icons/GoogleLogo.jsx';
 import { SparklesCore } from "@/components/ui/sparkles";
 import { FlipWords } from "@/components/ui/flip-words";
+import { GiArtificialHive } from "react-icons/gi";
 
 function AuthPage() {
   const navigation = useNavigate();
@@ -34,8 +35,9 @@ function AuthPage() {
 
   return (
     <div className="font-Poppins text-white bg-black p-6 flex flex-col h-screen">
-      <header className="text-center hover:text-zinc-400 transition duration-300 ease-in-out">
-        <Link to="/" className="text-lg font-bold">TRADA</Link>
+      <header className='group flex flex-row justify-center items-center font-bold text-2xl top-0 w-full hover:text-zinc-400 transition duration-300 ease-in-out'>
+          <GiArtificialHive className="w-8 h-8 mr-2 text-fuchsia-500 group-hover:text-fuchsia-700 transition duration-300 ease-in-ou" />
+          <Link to='/'>TRADA</Link>
       </header>
 
       <div className="relative flex-grow flex">

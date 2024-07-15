@@ -3,8 +3,9 @@ import { IoIosClose, IoIosSend } from "react-icons/io";
 import { GiArtificialHive } from "react-icons/gi";
 import { ImageIcon } from "@/assets/icons/ImageIcon";
 import { useFirestoreContext } from "@/contexts/FirestoreContext";
+import { CircleAccount } from "@/assets/icons/CircleAccount";
 
-const Expand = ({ setOpenExpand, body, setBody, files, setFiles, previews, setPreviews, handleSubmit, makePreview, handleFileSelection }) => {
+const Expand = ({ setOpenExpand, body, setBody, files, setFiles, previews, setPreviews, handleSubmit, makePreview, handleFileSelection, userProfile }) => {
     
     const contentEditableRef = useRef(null);
 
@@ -24,10 +25,16 @@ const Expand = ({ setOpenExpand, body, setBody, files, setFiles, previews, setPr
     <div className="w-full bg-zinc-950 p-4 min-w-[70vh] max-h-[80vh] overflow-y-auto">
         <div className="max-w-2xl mx-auto bg-zinc-950 rounded-lg shadow-md overflow-hidden">
             <div className="p-4 flex items-center">
-                <div className="bg-white rounded-full shadow-md w-12 h-12"></div>
+                <div>
+                    {userProfile?.pfp ? (
+                        <img src={userProfile.pfp} alt="Profile" className="h-14 w-14 mr-2 rounded-full object-cover" />
+                    ) : (
+                        <CircleAccount className="h-14 w-14 mr-2 fill-gray-400 hover:fill-gray-500 transition-colors ease-in-out duration-300" />
+                    )}
+                </div>
                 <div className="flex flex-col ml-4 font-light text-lg text-gray-500">
-                    <span className="font-medium text-white">{'name'}</span>
-                    <span>{'username'}</span>
+                    <span className="font-medium text-white">{userProfile?.name || 'guest'}</span>
+                    <span>{userProfile?.username || 'guest_usetname'}</span>
                 </div>
                 <div className="ml-auto">
                     <button type='button' className="cursor-pointer" onClick={() => setOpenExpand(false)}>

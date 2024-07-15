@@ -4,7 +4,7 @@ import { getFirestore, serverTimestamp as firestoreServerTimestamp } from 'fireb
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDocluE1WG_9kVxe5U0BXC8Jn3jXbFz5yY",
+  apiKey: REACT_APP_FIREBASE_KEY,
   authDomain: "trada-29ce0.firebaseapp.com",
   projectId: "trada-29ce0",
   storageBucket: "trada-29ce0.appspot.com",
